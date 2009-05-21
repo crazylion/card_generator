@@ -1,0 +1,103 @@
+<%- content_for :secondarycontent do -%>
+   <h4> 最新迴響</h4>
+	<div class="contentarea">
+		<ul>
+			<%- for comment in @card.comments -%>
+			<li>
+				<span style="color:#aaa">by <%= comment.user.login %> on <%= time_ago_in_words comment.created_at %> ago</span>
+				<%= simple_format comment.comment %>
+			</li>
+			<%- end -%>
+		</ul>
+	</div>
+<%- end -%>
+	<p style="color: green"><%= flash[:notice] %></p>
+
+	<!-- Normal content: Stuff that's not going to be put in the left or right column. -->
+	<div id="normalcontent">
+		<h3><strong><%=h @card.title %></h3>
+		<div class="contentarea">
+			<!-- Normal content area start -->
+
+			<%= image_tag @card.cover.url(:A6),:class=>"left" %>
+
+			<%= simple_format @card.desc %>
+			<%- if @card.back.file? -%>
+			
+			<%= image_tag @card.back.url(:A6),:class=>"left" %>
+			<%- end -%>
+			<!-- Normal content area end -->
+			<ul class="controls">
+				<li> <a href="#" name="printerfriendly" class="printerfriendly"  onclick="javascript:form1.submit()">Printer Friendly</a></li>
+				<li>  <%= link_to "comments(#{@card.comments.size})",card_path(@card,:anchor=>"comments"),:class=>"comments" %></li>
+				<li><%= link_to 'Edit', edit_card_path(@card),:class=>"comments" %></li>		
+				<li><%= link_to "刪除",:controller=>"cards",:action=>"destroy",:id=>@card %></li>
+				
+				<li><%= link_to 'Back', category_path(@card.category) %></li>
+						
+			</ul>
+		</div>
+		<div>
+			
+
+			列印選項：
+			<form action="<%=card_path(@card,:format=>"pdf")  %>" name="form1">
+			<table>
+
+				<tr>
+					<td>
+						版面配置
+					</td>
+					<td>
+				<select name="layout">
+					<option value="portrait">直印</option>
+					<option value="landscape">
+						橫印
+					</option>
+				</select>
+				</td>
+				</tr>
+				<tr><td>
+					紙張大小
+				</td>
+				<td>
+					<select name="page_size" id="page_size">
+						<option value="A6">A6(圖片最佳大小 寬297px 高419px)</option>
+						<option value="A5">A5(尚未設定)</option>
+						<option value="A4">A4(尚未設定)</option>
+					</select>
+
+				</td>
+
+				</tr>
+				<tr>
+					<td>
+					字體大小
+					</td>
+					<td>
+						<select name="font_size" id="font_size"  onchange="" size="1">
+							<%- 8.upto(12){|size| -%>
+							<option value="<%= size %>"><%= size %></option>
+							<%- } -%>
+						</select>
+					</td>
+				</tr>
+			</table>
+			</form>
+
+		</div>
+		<div>
+			<%- if logged_in? -%>
+		 <% form_for :card, @card, :url => { :action => "add_comment",:id=>@card.id } do |f| %>
+				<table border="0" cellspacing="5" cellpadding="5">
+					<tr><td>logged in as</td><td><%= current_user.login %></td></tr>
+					<tr><td>comment</td><td> <textarea name="comment" rows="8" cols="40"></textarea></td></tr>
+				</table>
+
+				<p><input type="submit" value="submit &rarr;"></p>
+			<%- end -%>
+		<%- else -%>			
+		 您需要<a href="/users/new">登入</a>才可發表迴響
+		<%- end -%>  
+		</div>
+	</div>

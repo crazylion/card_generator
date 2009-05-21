@@ -1,0 +1,26 @@
+<h1>Listing cards</h1>
+
+<table>
+  <tr>
+	<th>Cover</th>
+
+    <th>Title</th>
+    <th>Desc</th>
+  </tr>
+
+<% @cards.each do |card| %>
+  <tr>
+	<td><%=image_tag (card.cover.url(:thumb)) %></td>
+
+    <td><%=h card.title %></td>
+    <td><%=h card.desc %></td>
+    <td><%= link_to 'Show', card %></td>
+    <td><%= link_to 'Edit', edit_card_path(card) %></td>
+    <td><%= link_to 'Destroy', card, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<!-- <%= link_to 'New card', new_card_path %> -->

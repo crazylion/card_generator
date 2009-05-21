@@ -1,0 +1,19 @@
+<%- if logged_in? -%>
+   <h4>Hi <%= current_user.login %></h4>
+	<div class="contentarea">
+<p>		您已新增 <%= current_user.cards.size %> 張卡片</p>
+<p>		您已建立 <%= current_user.categories.size %> 個牌組</p>
+		<a href="/sessions/destroy">
+			登出
+		</a>
+	</div>
+	<p></p>
+	<%- else -%>
+	<h4>您尚未登入</h4>
+		<div class="contentarea">
+			<a href="/sessions/new">
+				登入
+			</a> | <%= link_to "signup",new_user_path %>
+		</div>
+		<p></p>
+<%- end -%>

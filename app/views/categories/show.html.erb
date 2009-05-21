@@ -1,0 +1,152 @@
+<%- content_for :rsslink do -%>
+<%= auto_discovery_link_tag :atom,category_path+".atom",{:title=>"最新上傳牌"} %>
+<%= auto_discovery_link_tag :atom,"/categories/comments_feed/#{@category.id}.atom",{:title=>"comment rss"} %>
+<%- end -%>
+<%- content_for :secondarycontent do -%>
+<h4>Last Modified by <a href="#"><%= @category.user.login %></a> </h4>
+<div class="contentarea">
+on <%= time_ago_in_words @category.created_at %> ago
+</div>
+<h4>Comments</h4>
+<div class="contentarea">
+<ul>
+	<%- for comment in @category.comments -%>
+		<li>
+			<span style="color:#aaa">by <%= comment.user.login %> on <%= time_ago_in_words comment.created_at %> ago</span>
+			<%= simple_format comment.comment %>
+			
+		</li>
+	<%- end -%>
+</ul>	
+</div>
+<%- end -%>
+
+	<p style="color: green"><%= flash[:notice] %></p>
+
+	<!-- Normal content: Stuff that's not going to be put in the left or right column. -->
+	<div id="normalcontent">
+		<h3><strong><%=h @category.title %></h3>
+		<div class="contentarea">
+			<!-- Normal content area start -->
+			
+			<%- if @cards and @cards.first -%>
+			<%= image_tag @cards.first.cover.url( :thumb),:class=>"left" %>
+			<%- end -%>
+			<%=simple_format @category.desc %>
+			<p>
+			分類:
+			<%= link_to "顯示全部",category_path %> 
+			<%- for tag in @tags -%>
+			  <%= link_to (tag.name+"(#{tag.count})"),:controller=>"categories",:action=>"show",:tagname=>tag.name %> 
+			<%- end -%>
+			</p>			
+			<ul class="controls">
+				<li><a href="#" class="printerfriendly"  onclick="javascript:form1.submit()">Printer Friendly</a></li>
+				<li><%= link_to "新增卡片",new_card_path(:category_id=>@category.id)%></li>
+				<li><%= link_to 'Edit', edit_category_path(@category) %></li>		
+				<li><%= link_to 'Back', categories_path %></li>
+				<li><%= link_to '刪除', @category, :confirm => 'Are you sure?', :method => :delete %></li>
+				<li> <%= link_to "comments(#{@category.comments.size})",category_path(@category,:anchor=>"comments"),:class=>"comments" %> </li>
+				<li><a href="#cards">Cards</a></li>
+						
+			</ul>
+			<!-- Normal content area end -->
+			<div>
+				
+				列印選項：
+				<form action="<%=category_path(@category,:format=>"pdf")  %>" name="form1">
+				<table>
+
+					<tr>
+						<td>
+							版面配置
+						</td>
+						<td>
+					<select name="layout">
+						<option value="portrait">直印</option>
+						<option value="landscape">
+							橫印
+						</option>
+					</select>
+					</td>
+					</tr>
+					<tr><td>
+						紙張大小
+					</td>
+					<td>
+						<select name="page_size" id="page_size">
+							<option value="A6">A6(圖片最佳大小 寬297px 高419px)</option>
+							<option value="A5">A5(尚未設定)</option>
+							<option value="A4">A4(尚未設定)</option>
+						</select>
+
+					</td>
+
+					</tr>
+					<tr>
+						<td>
+						字體大小
+						</td>
+						<td>
+							<select name="font_size" id="font_size"  onchange="" size="1">
+								<%- 8.upto(12){|size| -%>
+								<option value="<%= size %>"><%= size %></option>
+								<%- } -%>
+							</select>
+						</td>
+					</tr>
+				</table>
+				</form>
+
+			</div>
+		</div>
+		<br/>
+		<div>
+			<%- if logged_in? -%>
+		 <% form_for :category, @category, :url => { :action => "add_comment",:id=>@category.id } do |f| %>
+				<table border="0" cellspacing="5" cellpadding="5">
+					<tr><td>logged in as</td><td><%= current_user.login %></td></tr>
+					<tr><td>comment</td><td> <textarea name="comment" rows="8" cols="40"></textarea></td></tr>
+				</table>
+
+				<p><input type="submit" value="submit &rarr;"></p>
+			<%- end -%>
+		<%- else -%>			
+		 您需要<a href="/users/new">登入</a>才可發表迴響
+		<%- end -%>  
+		</div>
+	</div>
+<div class="divider1"></div>
+<div style="width:100%;text-align:center">
+	<%= will_paginate @cards %>
+</div>
+<a href="#" name="cards"></a>
+<%- for card in @cards -%>
+<div class="post">
+	<h4> <%= link_to h(card.title),card_path(card) %></h4>
+	<div class="contentarea">
+		<div class="details">Last Updated by <a href="#"><%= card.user.login %></a> on <%=time_ago_in_words card.created_at %> ago</div>	
+		<%= image_tag card.cover.url,:class=>"left" %>
+		<p><%= simple_format card.desc %></p>
+		<p>
+		tags on:	<%- for tag in card.tags -%>
+			  <%= link_to tag.name,:controller=>"categories",:action=>"show",:tagname=>tag.name %>
+			<%- end -%>
+		</p>
+		<ul class="controls">
+			<li><%= link_to "Printer Friendly",card_path(card,:anchor=>"printerfriendly"),:class=>"printerfriendly" %>
+
+			</li>
+			<li> <%= link_to "comments(#{card.comments.size})",card_path(card,:anchor=>"comments"),:class=>"comments" %></li>
+			<li> <%= link_to "edit",edit_card_path(card),:class=>"comments" %> </li>	
+			<li><%= link_to '刪除', card, :confirm => 'Are you sure?', :method => :delete %></li>
+						
+		</ul>
+	</div>
+</div>
+
+<div class="divider2"></div>
+<%- end -%>
+<div style="width:100%;text-align:center">
+	<%= will_paginate @cards %>
+</div>

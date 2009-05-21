@@ -1,0 +1,27 @@
+<%- content_for :secondarycontent  do -%>
+<h4>
+	新增牌組
+</h4>
+<div class="contentarea">
+	您可以在此處新增牌組
+</div> 
+<%- end -%>
+<h1>新增牌組</h1>
+
+<% form_for(@category) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :title %><br />
+    <%= f.text_field :title %>
+  </p>
+  <p>
+    <%= f.label :desc %><br />
+    <%= f.text_area :desc %>
+  </p>
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', categories_path %>

@@ -1,0 +1,44 @@
+<%- content_for :secondarycontent  do -%>
+<h4>
+	新增卡片
+</h4>
+<div class="contentarea">
+	您可以在此處新增卡片
+</div> 
+<%- end -%>
+<h1>New card</h1>
+
+<% form_for(@card,:html => { :multipart => true } ) do |f| %>
+  <%= f.error_messages %>
+
+
+  <p>
+    <%= f.label :title %><br />
+    <%= f.text_field :title %>
+  </p>
+  <p>
+    <%= f.label :desc %><br />
+    <%= f.text_area :desc %>
+  </p>
+	<p>
+		<%= f.label :cover,"正面" %><br/>
+		<%= f.file_field :cover %>
+		
+	</p>
+	<p>
+		<%= f.label :cover,"背面" %><br/>
+		<%= f.file_field :back %>
+		
+	</p>
+	
+	<p>
+		<%= f.label :tag_list %><br/>
+		<%= f.text_field :tag_list %>
+	</p>
+  <p>
+	<%= f.hidden_field :category_id %>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', "javascript:history.go(-1)",:onclick=>"javascript:history.go(-1)" %>

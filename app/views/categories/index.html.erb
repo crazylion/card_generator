@@ -1,0 +1,46 @@
+
+	<p style="color: green"><%= flash[:notice] %></p>
+
+	<!-- Normal content: Stuff that's not going to be put in the left or right column. -->
+	<div id="normalcontent">
+		<h3><strong>卡片牌組產生器</h3>
+		<div class="contentarea">
+			<!-- Normal content area start -->
+
+			<img src="images/pic1.jpg" class="left" alt="A chinese lion statue" />
+			<p>Zenlike<sup>1.0</sup> is a free, lightweight, tableless, fluid W3C-compliant website design by <a href="http://www.nodethirtythree.com/">NodeThirtyThree Design</a>. All photos came from <a href="http://www.pdphoto.org/">PDPhoto</a> and the background texture is from <a href="http://www.mayang.com/textures/">Mayang's texture site</a>. You're free to dissect, manipulate and use it to your heart's content. We only ask that you link back to <a href="http://www.nodethirtythree.com/">our site</a> in some way. If you find this design useful, feel free to let us know :)</p>
+			<p>You can find more of our free work at this site or <a href="http://www.nodethirtythree.com/">our site</a>, or some of our commercial work on <a href="http://www.4templates.com/?aff=n33">4Templates.com</a>, a commercial website template site.</p>
+(<%= link_to '新增卡片牌組', new_category_path %>)
+			<!-- Normal content area end -->
+		</div>
+	</div>
+
+
+	<div class="divider1"></div>
+
+		<%- for category in @categories -%>
+
+		
+		<div class="post">
+			<h4><%= link_to h(category.title),:controller=>"categories",:action=>"show",:id=>category.id %></h4>
+			<div class="contentarea">
+				<div class="details">Posted by <a href="#"><%= category.user.login %></a> on <%= category.created_at %></div>	
+				<%- if category.cards and category.cards.first -%>
+				<%= image_tag category.cards.first.cover.url( :thumb),:class=>"left" %>
+				<%- end -%>
+				
+				<p>
+					<%= simple_format(category.desc) %>
+				</p>
+				<ul class="controls">
+					<!-- <li><a href="#" class="printerfriendly">Printer Friendly</a></li> -->
+					<li><%= link_to "新增卡片",new_card_path(:category_id=>category.id)%></li>
+					<li> <%= link_to "Comments(#{category.comments.size})",category_path(category,:anchor=>"comments"),:class=>"comments" %></li>
+					<li> <%= link_to "more",category_path(category),:class=>"more" %> </li>				
+				</ul>
+			</div>
+		</div>
+
+		<div class="divider2"></div>
+		<%- end -%>
+

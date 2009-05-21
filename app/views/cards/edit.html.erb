@@ -1,0 +1,45 @@
+<h1>Editing card</h1>
+
+<% form_for(@card,:html => { :multipart => true }) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :title %><br />
+    <%= f.text_field :title %>
+  </p>
+  <p>
+    <%= f.label :desc %><br />
+    <%= f.text_area :desc %>
+  </p>
+	<p>
+		<%- if @card.cover.file? -%>
+		<%= image_tag @card.cover.url(:thumb) %>
+		<%- end -%>
+		<%= f.label :cover,"正面" %>
+		
+		 <br/>
+		<%= f.file_field :cover %>
+		
+	</p>
+	<p>
+		<%- if @card.back.file? -%>
+		<%= image_tag @card.back.url(:thumb) %>
+		<%- end -%>
+		
+		<%= f.label :cover,"背面" %>
+		<br/>
+		<%= f.file_field :back %>
+		
+	</p>
+	
+	<p>
+		<%= f.label :tag_list %><br/>
+		<%= f.text_field :tag_list %>
+	</p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @card %> |
+<%= link_to 'Back',  categories_path(@card.category)%>
