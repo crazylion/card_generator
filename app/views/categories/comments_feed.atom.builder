@@ -1,6 +1,10 @@
 atom_feed do |feed|
   feed.title(@category.title)
-  feed.updated((@comments.first.created_at))
+  if !@comments.nil? and @comments.first
+    feed.updated((@comments.first.created_at))
+  else
+    # feed.updated
+  end
   feed.url("")
       for comment in @comments
         card =Card.find(comment.commentable_id)
