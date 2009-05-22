@@ -33,6 +33,11 @@ class CategoriesController < ApplicationController
     end
   end
 
+  # randomly give a card 
+  def hints
+    @card = @category.cards.rand
+  end
+
 
   def comments_feed
     @comments = Comment.find(:all,:conditions=>"commentable_type='Card'",:joins=>"left join Cards on category_id=#{@category.id}",:order=>"comments.created_at desc")

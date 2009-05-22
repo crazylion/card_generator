@@ -1,0 +1,13 @@
+<div id="normalcontent">
+	<h3><strong><%=h @card.title %></h3>
+		<div class="contentarea">
+
+		<%= image_tag @card.cover.url(:A6),:class=>"left" %>
+
+		<%= simple_format @card.desc %>
+		<%- if @card.back.file? -%>
+
+			<%= image_tag @card.back.url(:A6),:class=>"left" %>
+			<%- end -%>
+		</div>
+</div>
