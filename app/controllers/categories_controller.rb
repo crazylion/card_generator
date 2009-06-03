@@ -36,6 +36,29 @@ class CategoriesController < ApplicationController
   # randomly give a card 
   def hints
     @card = @category.cards.rand
+    respond_to do |format|
+      format.html
+      # format.json{render :json=>@card}
+    end
+  end
+  
+  def single_fortune
+        # @card = @category.cards.rand
+        @card = Card.find(:all,:conditions=>["category_id=? and id not in(?)",@category.id,session[:fortune]]).rand
+        if @card
+          session[:fortune] << @card.id
+        end
+        # if session[:fortune].include?(@card.id)
+        # end
+        render :action=>"single_fortune",:layout=>false;
+  end
+
+  # give five hints
+  def fortune
+    session[:fortune]=[]
+    if @category.cards.size<5
+      flash[:notice]="牌組張數不夠"
+    end
   end
 
 

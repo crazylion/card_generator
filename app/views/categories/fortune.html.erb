@@ -1,0 +1,82 @@
+<table width="550" border="0">
+  <tr>
+    <td>&nbsp;</td>
+    <td>
+		<div class="card-warp">
+			<div class="back">
+				5.答案
+			</div>
+			<div class="card"></div>
+    	
+    	</div>
+	</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>	
+		<div class="card-warp">
+			<div class="back">
+				2.您看不到的影響
+			</div>
+			
+			<div class="card"></div>
+  			
+  			</div>
+		</td>
+    <td>
+    	<div class="card-warp">
+			<div class="back">
+				1.問題
+			</div>
+			
+			<div class="card"></div>
+    	
+    	</div>
+    </td>
+    <td>
+	   	<div class="card-warp">
+			<div class="back">
+				3.你所知道的外部影響
+			</div>
+			
+			<div class="card"></div>
+
+	    </div>
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td><div class="card-warp">
+		<div class="back">
+			4.解決問題所需要的
+		</div>
+		
+		<div class="card"></div>
+	
+	</div></td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+
+<%- content_for :script do -%>
+$(document).ready(function(){
+
+$(".card-warp").click(function(){
+	
+	var _self = this;
+	$.get("/categories/single_fortune/<%= @category.id %>",function(data){
+			$(_self).unbind();
+			$(".card",_self).empty().append(data).fadeIn("slow",function(){
+				$("a",this).tooltip({
+					bodyHandler: function(){
+						return $(".hints",_self).html();
+					},
+					showURL: false
+				});
+			});
+		
+	})
+});
+	
+});
+<%- end -%>

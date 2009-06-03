@@ -49,6 +49,8 @@ on <%= time_ago_in_words @category.created_at %> ago
 				<li> <%= link_to "comments(#{@category.comments.size})",category_path(@category,:anchor=>"comments"),:class=>"comments" %> </li>
 				<li><a href="#cards">Cards</a></li>
 				<li><%= link_to "hints",:controller=>"categories",:action=>"hints",:id=>@category %></li>		
+				<li><%= link_to "fortune-teller",:controller=>"categories",:action=>"fortune",:id=>@category %></li>
+				
 			</ul>
 			<!-- Normal content area end -->
 			<div>

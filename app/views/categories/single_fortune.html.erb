@@ -1,0 +1,13 @@
+<%- if @card -%>
+<div><%= link_to image_tag(@card.cover.url(:A6)),card_path(@card) %></div>
+<div class="hints">
+			<h2><%= h(@card.title) %></h2>
+	<p>		<%= simple_format(@card.desc) %></p>
+	
+</div>
+<%- else -%>
+<div class="back">
+牌組內已無多餘的牌!!!	
+</div>
+
+<%- end -%>
